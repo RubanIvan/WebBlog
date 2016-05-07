@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище WebBlogModelContainer" CdmEntityContainer="WebBlogEntities">
+    <EntitySetMapping Name="Lang">
+      <EntityTypeMapping TypeName="WebBlogModel.Lang">
+        <MappingFragment StoreEntitySet="Lang">
+          <ScalarProperty Name="LangID" ColumnName="LangID" />
+          <ScalarProperty Name="LangText" ColumnName="LangText" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Technology">
+      <EntityTypeMapping TypeName="WebBlogModel.Technology">
+        <MappingFragment StoreEntitySet="Technology">
+          <ScalarProperty Name="TechID" ColumnName="TechID" />
+          <ScalarProperty Name="ParentTechID" ColumnName="ParentTechID" />
+          <ScalarProperty Name="TechText" ColumnName="TechText" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Post">
+      <EntityTypeMapping TypeName="WebBlogModel.Post">
+        <MappingFragment StoreEntitySet="Post">
+          <ScalarProperty Name="RawPost" ColumnName="RawPost" />
+          <ScalarProperty Name="Topic" ColumnName="Topic" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="TechID" ColumnName="TechID" />
+          <ScalarProperty Name="LangID" ColumnName="LangID" />
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PostTag">
+      <EntityTypeMapping TypeName="WebBlogModel.PostTag">
+        <MappingFragment StoreEntitySet="PostTag">
+          <ScalarProperty Name="TagID" ColumnName="TagID" />
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="PostTagID" ColumnName="PostTagID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tag">
+      <EntityTypeMapping TypeName="WebBlogModel.Tag">
+        <MappingFragment StoreEntitySet="Tag">
+          <ScalarProperty Name="TagName" ColumnName="TagName" />
+          <ScalarProperty Name="TagID" ColumnName="TagID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

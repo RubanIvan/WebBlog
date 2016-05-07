@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище WebBlogModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Lang">
+    <Key>
+      <PropertyRef Name="LangID" />
+    </Key>
+    <Property Name="LangID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LangText" Type="nvarchar" MaxLength="512" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LangID" Type="int" />
+    <Property Name="TechID" Type="int" />
+    <Property Name="CreateTime" Type="smalldatetime" Nullable="false" />
+    <Property Name="Topic" Type="nvarchar" MaxLength="1024" Nullable="false" />
+    <Property Name="RawPost" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PostTag">
+    <Key>
+      <PropertyRef Name="PostTagID" />
+    </Key>
+    <Property Name="PostTagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PostID" Type="int" Nullable="false" />
+    <Property Name="TagID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="TagID" />
+    </Key>
+    <Property Name="TagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TagName" Type="nvarchar" MaxLength="512" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Technology">
+    <Key>
+      <PropertyRef Name="TechID" />
+    </Key>
+    <Property Name="TechID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentTechID" Type="int" />
+    <Property Name="TechText" Type="nvarchar" MaxLength="512" />
+  </EntityType>
+  <Association Name="FK_LangID_Lang">
+    <End Role="Lang" Type="Self.Lang" Multiplicity="0..1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lang">
+        <PropertyRef Name="LangID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="LangID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PostID_Post">
+    <End Role="Post" Type="Self.Post" Multiplicity="1" />
+    <End Role="PostTag" Type="Self.PostTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="PostTag">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TagID_Tag">
+    <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+    <End Role="PostTag" Type="Self.PostTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tag">
+        <PropertyRef Name="TagID" />
+      </Principal>
+      <Dependent Role="PostTag">
+        <PropertyRef Name="TagID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TechID_Technology">
+    <End Role="Technology" Type="Self.Technology" Multiplicity="0..1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Technology">
+        <PropertyRef Name="TechID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="TechID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище WebBlogModelContainer">
+    <EntitySet Name="Lang" EntityType="Self.Lang" Schema="blog" store:Type="Tables" />
+    <EntitySet Name="Post" EntityType="Self.Post" Schema="blog" store:Type="Tables" />
+    <EntitySet Name="PostTag" EntityType="Self.PostTag" Schema="blog" store:Type="Tables" />
+    <EntitySet Name="Tag" EntityType="Self.Tag" Schema="blog" store:Type="Tables" />
+    <EntitySet Name="Technology" EntityType="Self.Technology" Schema="blog" store:Type="Tables" />
+    <AssociationSet Name="FK_LangID_Lang" Association="Self.FK_LangID_Lang">
+      <End Role="Lang" EntitySet="Lang" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PostID_Post" Association="Self.FK_PostID_Post">
+      <End Role="Post" EntitySet="Post" />
+      <End Role="PostTag" EntitySet="PostTag" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TagID_Tag" Association="Self.FK_TagID_Tag">
+      <End Role="Tag" EntitySet="Tag" />
+      <End Role="PostTag" EntitySet="PostTag" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TechID_Technology" Association="Self.FK_TechID_Technology">
+      <End Role="Technology" EntitySet="Technology" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebBlogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Lang">
+    <Key>
+      <PropertyRef Name="LangID" />
+    </Key>
+    <Property Name="LangID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LangText" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Post" Relationship="WebBlogModel.FK_LangID_Lang" FromRole="Lang" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Technology">
+    <Key>
+      <PropertyRef Name="TechID" />
+    </Key>
+    <Property Name="TechID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentTechID" Type="Int32" />
+    <Property Name="TechText" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Post" Relationship="WebBlogModel.FK_TechID_Technology" FromRole="Technology" ToRole="Post" />
+  </EntityType>
+  <EntityContainer Name="WebBlogEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Lang" EntityType="Self.Lang" />
+    <EntitySet Name="Technology" EntityType="Self.Technology" />
+    <EntitySet Name="Post" EntityType="WebBlogModel.Post" />
+    <EntitySet Name="PostTag" EntityType="WebBlogModel.PostTag" />
+    <EntitySet Name="Tag" EntityType="WebBlogModel.Tag" />
+    <AssociationSet Name="FK_LangID_Lang" Association="WebBlogModel.FK_LangID_Lang">
+      <End Role="Lang" EntitySet="Lang" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PostID_Post" Association="WebBlogModel.FK_PostID_Post">
+      <End Role="Post" EntitySet="Post" />
+      <End Role="PostTag" EntitySet="PostTag" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TechID_Technology" Association="WebBlogModel.FK_TechID_Technology">
+      <End Role="Technology" EntitySet="Technology" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TagID_Tag" Association="WebBlogModel.FK_TagID_Tag">
+      <End Role="Tag" EntitySet="Tag" />
+      <End Role="PostTag" EntitySet="PostTag" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LangID" Type="Int32" />
+    <Property Name="TechID" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Topic" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+    <Property Name="RawPost" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Lang" Relationship="WebBlogModel.FK_LangID_Lang" FromRole="Post" ToRole="Lang" />
+    <NavigationProperty Name="PostTag" Relationship="WebBlogModel.FK_PostID_Post" FromRole="Post" ToRole="PostTag" />
+    <NavigationProperty Name="Technology" Relationship="WebBlogModel.FK_TechID_Technology" FromRole="Post" ToRole="Technology" />
+  </EntityType>
+  <EntityType Name="PostTag">
+    <Key>
+      <PropertyRef Name="PostTagID" />
+    </Key>
+    <Property Name="PostTagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PostID" Type="Int32" Nullable="false" />
+    <Property Name="TagID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="WebBlogModel.FK_PostID_Post" FromRole="PostTag" ToRole="Post" />
+    <NavigationProperty Name="Tag" Relationship="WebBlogModel.FK_TagID_Tag" FromRole="PostTag" ToRole="Tag" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="TagID" />
+    </Key>
+    <Property Name="TagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TagName" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PostTag" Relationship="WebBlogModel.FK_TagID_Tag" FromRole="Tag" ToRole="PostTag" />
+  </EntityType>
+  <Association Name="FK_LangID_Lang">
+    <End Type="WebBlogModel.Lang" Role="Lang" Multiplicity="0..1" />
+    <End Type="WebBlogModel.Post" Role="Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lang">
+        <PropertyRef Name="LangID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="LangID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PostID_Post">
+    <End Type="WebBlogModel.Post" Role="Post" Multiplicity="1" />
+    <End Type="WebBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="PostTag">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TechID_Technology">
+    <End Type="WebBlogModel.Technology" Role="Technology" Multiplicity="0..1" />
+    <End Type="WebBlogModel.Post" Role="Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Technology">
+        <PropertyRef Name="TechID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="TechID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TagID_Tag">
+    <End Type="WebBlogModel.Tag" Role="Tag" Multiplicity="1" />
+    <End Type="WebBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tag">
+        <PropertyRef Name="TagID" />
+      </Principal>
+      <Dependent Role="PostTag">
+        <PropertyRef Name="TagID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
